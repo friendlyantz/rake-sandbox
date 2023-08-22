@@ -17,6 +17,8 @@ task :md_to_html do
 
   %w[README.md RICKROLL.md].each do |md_file|
     html_file = File.basename(md_file, '.md') + '.html'
-    system("pandoc -o #{html_file} #{md_file}")
+    file html_file => md_file do
+      sh "pandoc -o #{html_file} #{md_file}"
+    end
   end
 end
