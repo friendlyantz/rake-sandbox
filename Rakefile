@@ -9,7 +9,16 @@ task :rickroll do
   puts RICKROLL
 end
 
-task md_to_html: %w[README.html RICKROLL.html]
+source_files = Rake::FileList.new('**/*.md') do |fl|
+  fl.exclude('**/~*') # exclude files with ~ in the name
+  fl.exclude do |file|
+    `git ls-files #{file}`.empty? # exclude files that are not tracked by git
+  end
+  fl.exclude(/^ignoredir/) # using REGEX
+  fl.exclude(/README/) # using REGEX
+end
+
+task md_to_html: source_files.ext('.html')
 
 rule '.html' => '.md' do |t| # unlike previous commit this rule defines a saving
   # RULE for files with .html extension with prerequisite 'md' file, so the

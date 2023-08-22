@@ -1,4 +1,6 @@
-# rake-sandbox
+* rake-sandbox
+{:toc}
+
 # CLI
 
 ## Incline execution
@@ -42,7 +44,35 @@ rule '.html' => '.md' do |t|
   end
   sh "pandoc -o #{t.name} #{t.source}"
 end
+```
 
+## Listing files
+
+```ruby
+files = Rake::FileList['**/*.md']
+files.exclude('**/~*') # exclude files with ~ in the name
+files.exclude do |file|
+  `git ls-files #{file}`.empty? # exclude files that are not tracked by git
+end
+files.exclude /^ignoredir/ # using REGEX
+```
+
+OR create instance of a file list and pass a block 
+
+```ruby
+files = Rake::FileList.new('**/*.md') do |fl|
+  fl.exclude('**/~*') # exclude files with ~ in the name
+  fl.exclude do |file|
+    `git ls-files #{file}`.empty? # exclude files that are not tracked by git
+  end
+  fl.exclude(/^ignoredir/) # using REGEX
+  fl.exclude(/README/) # using REGEX
+end
+```
+### listing files with new file ext
+
+```ruby
+files.ext('html')
 ```
 
 # Resources
