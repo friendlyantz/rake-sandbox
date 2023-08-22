@@ -9,16 +9,15 @@ task :rickroll do
   puts RICKROLL
 end
 
-task :md_to_html do
-  if `which pandoc`.empty?
-    puts 'pandoc is not installed'
-    exit 1
-  end
+task md_to_html: %W[README.html RICKROLL.html] 
 
-  %w[README.md RICKROLL.md].each do |md_file|
-    html_file = File.basename(md_file, '.md') + '.html'
-    file html_file => md_file do
-      sh "pandoc -o #{html_file} #{md_file}"
+%w[README.md RICKROLL.md].each do |md_file|
+  html_file = File.basename(md_file, '.md') + '.html'
+  file html_file => md_file do # this defines a file saving rule for HTML files
+    if `which pandoc`.empty?
+      puts 'pandoc is not installed'
+      exit 1
     end
+    sh "pandoc -o #{html_file} #{md_file}"
   end
 end
