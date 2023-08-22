@@ -27,6 +27,24 @@ pandoc -o README.html README.md
 ❯ rake md_to_html README.html
 ```
 
+## using Rules
+
+unlike previous commit this rule defines a saving
+RULE for files with .html extension with prerequisite 'md' file, so the
+rake initially looks for a rule with exact match of `README.html`, doesn't
+find and then goes to generic '.html' rule
+Previously with used `file` task, with explicit name of the file
+```ruby
+rule '.html' => '.md' do |t| 
+  if `which pandoc`.empty?
+    puts 'pandoc is not installed'
+    exit 1
+  end
+  sh "pandoc -o #{t.name} #{t.source}"
+end
+
+```
+
 # Resources
 
 https://graceful.dev/courses/the-freebies/modules/rake-and-project-automation/topic/episode-129-rake/

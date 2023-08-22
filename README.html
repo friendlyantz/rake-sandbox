@@ -15,5 +15,14 @@
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="ex">pandoc</span> -o README.html README.md</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>❯ <span class="ex">rake</span> md_to_html README.html</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>❯ <span class="ex">rake</span> md_to_html README.html</span></code></pre></div>
+<h2 id="using-rules">using Rules</h2>
+<p>unlike previous commit this rule defines a saving RULE for files with .html extension with prerequisite ‘md’ file, so the rake initially looks for a rule with exact match of <code>README.html</code>, doesn’t find and then goes to generic ‘.html’ rule Previously with used <code>file</code> task, with explicit name of the file</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode ruby"><code class="sourceCode ruby"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>rule <span class="st">&#39;.html&#39;</span> =&gt; <span class="st">&#39;.md&#39;</span> <span class="kw">do</span> |t| </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>  <span class="kw">if</span> <span class="st">`which pandoc`</span>.empty?</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>    puts <span class="st">&#39;pandoc is not installed&#39;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>    exit <span class="dv">1</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>  <span class="kw">end</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>  sh <span class="st">&quot;pandoc -o </span><span class="ot">#{</span>t.name<span class="ot">}</span><span class="st"> </span><span class="ot">#{</span>t.source<span class="ot">}</span><span class="st">&quot;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a><span class="kw">end</span></span></code></pre></div>
 <h1 id="resources">Resources</h1>
 <p>https://graceful.dev/courses/the-freebies/modules/rake-and-project-automation/topic/episode-129-rake/</p>
