@@ -1,3 +1,4 @@
+Rake.application.options.trace_rules = true
 task default: %w[greet]
 
 task :greet do

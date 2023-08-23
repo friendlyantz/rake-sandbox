@@ -75,6 +75,17 @@ end
 files.ext('html')
 ```
 
+# Debugging
+
+```ruby
+Rake.application.options.trace_rules = true
+```
+
+then run
+```sh
+rake --trace
+```
+
 # Resources
 
 https://graceful.dev/courses/the-freebies/modules/rake-and-project-automation/topic/episode-129-rake/
